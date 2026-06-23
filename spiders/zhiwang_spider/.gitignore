@@ -1,0 +1,12 @@
+# .pyc文件
+*.pyc
+
+# .idea文件夹
+/.idea
+# .csv文件
+*.csv
+
+# .log
+*.log
+
+
