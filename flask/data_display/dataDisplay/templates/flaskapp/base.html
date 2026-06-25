@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>数据分析系统</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='flaskapp/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{{ url_for('static', filename='flaskapp/css/metisMenu.min.css') }}" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="{{ url_for('static', filename='flaskapp/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="{{ url_for('static', filename='flaskapp/css/dataTables.responsive.css') }}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='flaskapp/css/sb-admin-2.css') }}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{ url_for('static', filename='flaskapp/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body style="padding-top: 0">
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">数据分析系统</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('public.logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </li>
+
+                    <li>
+                        <a href="/index"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                {% if current_user.department=='department1' or current_user.roles[0].permissions>=7 %}
+                                    <a href="/charts/department1">农社科</a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department2' or current_user.roles[0].permissions>=7 %}
+                                    <a href="/charts/department2">专利科</a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department3' or current_user.roles[0].permissions>=7 %}
+                                    <a href="/charts/department3">法规科</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a><i class="fa fa-table fa-fw"></i> Tables<span class="fa arrow"></span></a>
+
+                        <ul class="nav nav-second-level">
+                            <li>
+                                {% if current_user.department=='department1' or current_user.roles[0].permissions>=7 %}
+                                    <a>农社科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            {% for tmp in [['国家重大专项','farm_socity_1'],
+                                                    ['国家星火计划','farm_socity_2'],
+                                                    ['省农业','farm_socity_3',],
+                                                    ['省社发','farm_socity_4'],
+                                                    ['省自然科学基金','farm_socity_5'],
+                                                    ['省软科学','farm_socity_6'],
+                                                    ['苏州农业项目','farm_socity_7'],
+                                                    ['苏州医疗器械与新医药专项','farm_socity_8'],
+                                                    ['苏州医疗卫生指导性项目','farm_socity_9'],
+                                                    ['昆山农业项目','farm_socity_10'],
+                                                    ['昆山社会发展项目','farm_socity_11'],
+                                                    ['昆山软科学项目','farm_socity_12'],
+                                                    ['省农业科技型企业','farm_socity_13']] %}
+                                                <a href={{ "/tables/"~tmp[1] }}>{{ tmp[0] }}</a>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department2' or current_user.roles[0].permissions>=7 %}
+                                    <a>专利科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="/tables/patent_1">立项名录</a>
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department3' or current_user.roles[0].permissions>=7 %}
+                                    <a>法规科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="/tables/law_1">立项项目累计情况</a>
+                                        </li>
+
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department4' or current_user.roles[0].permissions>=7 %}
+                                    <a>合作交流科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            {% for tmp in [['国家级国际科技合作与交流专项','cop_ex_1'],
+                                                    ['省级产学研联合创新资金','cop_ex_2'],
+                                                    ['省级国际科技合作项目','cop_ex_3'],
+                                                    ['苏州市级国际科技合作项目','cop_ex_4'],
+                                                    ['昆山市级国际科技合作项目','cop_ex_5'],
+                                                    ['产学研联合项目','cop_ex_6'],
+                                                    ['产学研联合体','cop_ex_7'],
+                                                    ['历年昆山市与高校院所签约情况','cop_ex_8'],
+                                                    ['教授博士柔性进企业','cop_ex_9'],
+                                                    ['企业创新岗','cop_ex_10'],
+                                                    ['2014协同创新项目','cop_ex_11'],
+                                                    ['2015对台科技合作专项','cop_ex_12']] %}
+                                                <a href={{ "/tables/"~tmp[1] }}>{{ tmp[0] }}</a>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department5' or current_user.roles[0].permissions>=7 %}
+                                    <a>高新科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            {% for tmp in [
+['清单','high_new_tec_1'],
+['2016重大科技项目引导扶持专项','high_new_tec_2'],
+['2013年度科技部创新型产业集群试点','high_new_tec_3'],
+['昆山市文化科技发展计划科技专项','high_new_tec_4'],
+['2013年省天使投资引导资金入库机构资格申报及资金申请','high_new_tec_5'],
+['2014年省级中小企业创新发展专项资金合同','high_new_tec_6'],
+['倍增计划','high_new_tec_7'],
+['孵化器','high_new_tec_8'],
+['高新技术企业(08年以后)','high_new_tec_9'],
+['高新技术企业','high_new_tec_10'],
+['国家“863”计划高技术成果产业化基地','high_new_tec_11'],
+['国家863计划','high_new_tec_12'],
+['国家863计划统计','high_new_tec_13'],
+['国家973计划','high_new_tec_14'],
+['国家火炬计划软件产业基地骨干企业','high_new_tec_15'],
+['国家火炬计划项目','high_new_tec_16'],
+['国家火炬计划重点高新技术企业','high_new_tec_17'],
+['国家级创新型试点企业','high_new_tec_18'],
+['国家科技支撑','high_new_tec_19'],
+['国家科技重大专项','high_new_tec_20'],
+['国家科技重大专项统计','high_new_tec_21'],
+['国家重点新产品计划 ','high_new_tec_22'],
+['国家重点新产品计划统计','high_new_tec_23'],
+['国家自主创新产品','high_new_tec_24'],
+['技术先进型服务企业','high_new_tec_25'],
+['技术先进型服务企业统计','high_new_tec_26'],
+['加速器','high_new_tec_27'],
+['江苏省产业技术创新战略联盟','high_new_tec_28'],
+['江苏省创新型乡镇','high_new_tec_29'],
+['江苏省创新型园区','high_new_tec_30'],
+['江苏省创新专业镇','high_new_tec_31'],
+['江苏省第二届百强民营科技企业','high_new_tec_32'],
+['江苏省高新技术企业培育计划推荐入库企业','high_new_tec_33'],
+['江苏省科技产业园','high_new_tec_34'],
+['江苏省科技型中小企业创业投资引导资金项目','high_new_tec_35'],
+['江苏省民营科技企业','high_new_tec_36'],
+['江苏省民营科技企业年度统计','high_new_tec_37'],
+['科技部科技型中小企业创业投资引导基金资格','high_new_tec_38'],
+['科技型中小企业技术创新基金项目','high_new_tec_39'],
+['科技型中小企业技术创新基金项目经费支持统计','high_new_tec_40'],
+['科技型中小企业技术创新基金项目年度统计','high_new_tec_41'],
+['昆山高新技术企业','high_new_tec_42'],
+['昆山高新技术企业统计','high_new_tec_43'],
+['昆山互联网+项目','high_new_tec_44'],
+['昆山科技企业孵化器','high_new_tec_45'],
+['昆山市促进台资企业转型升级项目','high_new_tec_46'],
+['昆山市高新技术产品','high_new_tec_47'],
+['昆山市高新技术产品统计','high_new_tec_48'],
+['昆山市高新技术产业集群示范科技专项','high_new_tec_49'],
+['昆山市机器人发展计划科技专项','high_new_tec_50'],
+['昆山市科技型企业技术创新资金项目','high_new_tec_51'],
+['昆山市企业科技产业园','high_new_tec_52'],
+['昆山市企业信息化示范工程项目','high_new_tec_53'],
+['昆山市新兴产业倍增计划科技专项','high_new_tec_54'],
+['昆山市众创空间认定清单','high_new_tec_55'],
+['昆山科技孵化器','high_new_tec_56'],
+['省创新方法示范企业','high_new_tec_57'],
+['省创新型企业','high_new_tec_58'],
+['省大学科技园','high_new_tec_59'],
+['省高新技术(后备）企业','high_new_tec_60'],
+['省高新技术（后备）企业未通过审核名单','high_new_tec_61'],
+['省高新技术产品','high_new_tec_62'],
+['省级众创集聚区','high_new_tec_63'],
+['省技术创新方法试点和示范企业','high_new_tec_64'],
+['省科技企业上市培育计划推荐入库企业','high_new_tec_65'],
+['省科技型企业技术创新资金项目','high_new_tec_66'],
+['省科技支撑计划（科技企业上市培育）统计','high_new_tec_67'],
+['省科技支撑计划（科技企业上市培育）','high_new_tec_68'],
+['省科技支撑计划项目','high_new_tec_69'],
+['省科技型中小企业','high_new_tec_70'],
+['省双密企业','high_new_tec_71'],
+['省文化科技产业园','high_new_tec_72'],
+['省众创空间','high_new_tec_73'],
+['省重点新产品','high_new_tec_74'],
+['省自主创新产品','high_new_tec_75'],
+['苏州高新技术产品','high_new_tec_76'],
+['苏州高新技术企业','high_new_tec_77'],
+['苏州高新技术企业统计','high_new_tec_78'],
+['苏州市创新先锋企业','high_new_tec_79'],
+['苏州市科技发展计划项目','high_new_tec_80'],
+['苏州众创空间','high_new_tec_81'],
+['特色产业基地','high_new_tec_82'],
+['新材料专项','high_new_tec_83'],
+['智能移动终端','high_new_tec_84']
+] %}
+                                                <a href={{ "/tables/"~tmp[1] }}>{{ tmp[0] }}</a>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if current_user.department=='department6' or current_user.roles[0].permissions>=7 %}
+                                    <a>成果科<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            {% for tmp in [['清单','result_1'],
+['奖励','result_2'],
+['大中型研发机构建设比例','result_3'],
+['企业研发机构建设情况调查统计完成进度2014','result_4'],
+['企业研发机构建设情况调查统计完成进度2015','result_5'],
+['贷款汇总表','result_6'],
+['苏科贷','result_7'],
+['风险池贷款','result_8'],
+['仪器专项','result_9'],
+['国家技术转移示范机构','result_10'],
+['省成果','result_11'],
+['苏州成果','result_12'],
+['昆山成果','result_13'],
+['培育转化一批','result_14'],
+['省设施','result_15'],
+['苏州设施','result_16'],
+['昆山设施','result_17'],
+['昆山服务业','result_18'],
+['省级国际科技合作项目','result_19'],
+['科技服务业','result_20'],
+['苏州市级国际科技合作项目','result_21'],
+['昆山市级国际科技合作项目','result_22'],
+['昆山市科技功臣奖','result_23'],
+['昆山市科技合作和科技成果产业化奖','result_24'],
+['生产力促进奖','result_25'],
+['何梁何利','result_26'],
+['昆山市级科技进步奖','result_27'],
+['苏州市科技创新创业市长奖','result_28'],
+['苏州市技术发明奖','result_29'],
+['苏州市级科技进步奖','result_30'],
+['省级科学技术奖','result_31'],
+['国家级科技进步奖','result_32'],
+['昆山作为参与单位获得奖项','result_33'],
+['江苏区域创新驿站服务站点','result_34'],
+['各级研发机构','result_35'],
+['购置研发设备补助清单','result_36'],
+['江苏省企业研究生工作站','result_37'],
+['江苏省重点企业研发机构','result_38'],
+['苏州市技术转移机构','result_39'],
+['苏州科技成果交易','result_40'],
+['技术合同认定情况','result_41'],
+['国家级大学生科技创业基地','result_42'],
+['省级创业导师','result_43'],
+['创业明星','result_44'],
+['省级创业基地','result_45'],
+['苏州级创业导师','result_46'],
+['创业孵化基地','result_47'],
+['外资研发机构2008年销售情况','result_48'],
+['江苏省检验检测服务外包基地','result_49'],
+['实验室','result_50'],
+['民办非企业','result_51'],
+['科学仪器共享','result_52'],
+['技术经纪人','result_53'],
+['研发机构比重','result_54'],
+['一企一档','result_55']
+                                                  ] %}
+                                                <a href={{ "/tables/"~tmp[1] }}>{{ tmp[0] }}</a>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            </li>
+
+                        </ul>
+                    </li>
+                    {% if current_user.roles[0].permissions>=7 %}
+                        <li>
+                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i>后台管理</a>
+
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    {% block content %}{% endblock %}
+
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='flaskapp/js/jquery.min.js') }}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ url_for('static', filename='flaskapp/js/bootstrap.min.js') }}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{{ url_for('static', filename='flaskapp/js/metisMenu.min.js') }}"></script>
+
+<!-- DataTables JavaScript -->
+<script src="{{ url_for('static', filename='flaskapp/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='flaskapp/js/dataTables.bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='flaskapp/js/dataTables.responsive.js') }}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="{{ url_for('static', filename='flaskapp/js/sb-admin-2.js') }}"></script>
+
+
+<script src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            dom: '<<"col-sm-4"l><"col-sm-5"B><"col-sm-3"f>>r<t><<"col-sm-6"i><"col-sm-6"p>>',
+            "buttons": [
+                {
+                    'extend': 'excel',
+                    'text': '导出',//定义导出excel按钮的文字
+                    'title': $.trim($("div.panel-heading").text()),
+                    'exportOptions': {
+                        'modifier': {
+                            {#                            'page': 'current'#}
+                        }
+                    }
+                }
+            ],
+
+            {#            responsive: true,#}
+            "scrollX": true,
+            "aLengthMenu": [20, 50, 100],
+            "order": [[0, "desc"]]
+        });
+    });
+</script>
+
+{#{% include "footer.html" %}#}
+</body>
+
+</html>

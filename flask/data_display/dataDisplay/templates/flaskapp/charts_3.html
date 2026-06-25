@@ -1,0 +1,186 @@
+{% extends "flaskapp/base.html" %}
+
+{% block content %}
+    <script src="{{ url_for('static', filename='flaskapp/js/echarts.js') }}"></script>
+    <script src="{{ url_for('static', filename='flaskapp/js/dataTool.js') }}"></script>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Charts</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        法规科项目资金分配情况
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body" id="chart1" style="height:280px;">
+                        <script type="text/javascript">
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById("chart1"));
+
+                            myChart.showLoading();
+
+                            option = {
+                                title: {
+                                    text: '资金分配情况(万元)',
+
+                                    x: 'center'
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                series: [
+                                    {
+                                        name: '资金状况',
+                                        type: 'pie',
+                                        radius: '50%',
+                                        center: ['50%', '50%'],
+                                        data: [
+                                            {value: {{ datas[0] }}, name: '上级拨款'},
+                                            {value: {{ datas[1] }}, name: '地方匹配'},
+                                            {value: {{ datas[2] }}, name: '住房补贴'},
+
+
+                                        ],
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            },
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    formatter: '{b} : {c}'
+                                                },
+                                                labelLine: {show: true}
+                                            }
+                                        }
+                                    }
+                                ]
+                            };
+
+                            myChart.hideLoading();
+                            myChart.setOption(option);
+                        </script>
+
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        法规科项目资金趋势
+                    </div>
+                    <div class="panel-body" id="chart2" style="height:280px;">
+                        <script type="text/javascript">
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById("chart2"));
+
+                            myChart.showLoading();
+
+                            option = {
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['上级拨款','地方匹配','住房补贴']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: ['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016']
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [
+                                    {
+                                        name: '上级拨款',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: [300,850,1100,3375,1300,1800,1540,2850,1815,1940]
+                                    },
+                                    {
+                                        name: '地方匹配',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: [300,700,2800,4325,5500,5275,3295,3300,5695,7020]
+                                    },
+                                    {
+                                        name: '住房补贴',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: [300,700,2450,3850,5900,5650,4000,3900,3600,4050]
+                                    },
+
+                                ]
+                            };
+
+                            myChart.hideLoading();
+                            myChart.setOption(option);
+                        </script>
+
+                    </div>
+                </div>
+                <!-- /.panel -->
+            </div>
+            {#            <!-- /.col-lg-6 -->#}
+            {#            <div class="col-lg-6">#}
+            {#                <div class="panel panel-default">#}
+            {#                    <div class="panel-heading">#}
+            {#                        Line Chart Example#}
+            {#                    </div>#}
+            {#                    <!-- /.panel-heading -->#}
+            {#                    <div class="panel-body">#}
+            {#                        <div id="morris-line-chart"></div>#}
+            {#                    </div>#}
+            {#                    <!-- /.panel-body -->#}
+            {#                </div>#}
+            {#                <!-- /.panel -->#}
+            {#            </div>#}
+            {#            <!-- /.col-lg-6 -->#}
+            {#            <div class="col-lg-6">#}
+            {#                <div class="panel panel-default">#}
+            {#                    <div class="panel-heading">#}
+            {#                        Donut Chart Example#}
+            {#                    </div>#}
+            {#                    <!-- /.panel-heading -->#}
+            {#                    <div class="panel-body">#}
+            {#                        <div id="morris-donut-chart"></div>#}
+            {#                    </div>#}
+            {#                    <!-- /.panel-body -->#}
+            {#                </div>#}
+            {#                <!-- /.panel -->#}
+            {#            </div>#}
+            <!-- /.col-lg-6 -->
+
+        </div>
+        <!-- /.row -->
+    </div>
+{% endblock %}
